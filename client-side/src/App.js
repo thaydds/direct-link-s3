@@ -3,35 +3,32 @@ import "./App.css";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3333";
-function getSignedRequest(file) {
-  axios
-    .get(`${BASE_URL}/sign-s3?file-name=${file.name}&file-type=${file.type}`)
-    .then(r => {
-      console.log("response", r);
-      // uploadFile(file, r.signedRequest, r.url);
-    });
-}
-
-function uploadFile(file, signedRequest, url) {
-  const xhr = new XMLHttpRequest();
-  xhr.open("PUT", signedRequest);
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        document.getElementById("preview").src = url;
-        document.getElementById("avatar-url").value = url;
-      } else {
-        alert("Could not upload file.");
-      }
-    }
-  };
-  xhr.send(file);
-}
 
 function App() {
+  function getSignedRequest(file) {
+    axios
+      .get(`${BASE_URL}/sign-s3?file-name=${file.name}&file-type=${file.type}`)
+      .then(({ data }) => {
+        console.log("response", data);
+        uploadFile(file, data.signedRequest, data.url);
+      });
+  }
+
+  const uploadFile = async (file, signedRequest, url) => {
+    const teste = {
+      headers: {
+        "Content-Type": file.type
+      }
+    };
+
+    console.log("signedRequest", signedRequest);
+    await axios.put(signedRequest, file, teste).then(r => setImg(url));
+  };
+
   const [file, setFile] = useState({ name: "" });
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");
+  const [img, setImg] = useState("");
 
   // useEffect(() => {
   //   axios.get(BASE_URL).then(res => {});
@@ -49,7 +46,8 @@ function App() {
         id="file-input"
       />
       <p id="status">Please select a file</p>
-      <img width="200" height="200" id="preview" src="tracer_lgbt.png" />
+
+      {img && <img width="200" height="200" id="preview" src={img} />}
       <form
         onSubmit={e => {
           e.preventDefault();
