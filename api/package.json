@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Thayrone",
   "license": "teste",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
   "dependencies": {
     "aws-sdk": "^2.610.0",
     "cors": "^2.8.5",
