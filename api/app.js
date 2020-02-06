@@ -6,9 +6,9 @@ const express = require("express");
 const aws = require("aws-sdk");
 const cors = require("cors");
 
-const AWS_ID = "AKIAIIZWADQKGRFTWIOA";
-const AWS_SECRET = "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";
-const S3_BUCKET_NAME = "thaydds-test-bucket";
+const AWS_ID = "";
+const AWS_SECRET = "";
+const S3_BUCKET_NAME = "";
 /*
  * Set-up and run the Express app.
  */
